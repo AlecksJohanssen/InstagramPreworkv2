@@ -139,8 +139,7 @@
         android:clickable="true"
         android:layout_marginRight="5dp"
         android:descendantFocusability="blocksDescendants"
-        android:layout_above="@+id/cmtlow1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp" />
+        android:layout_below="@+id/tvCaption"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
