@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.instalogo);
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 fetchTimelineAsync(0);
             }
         });
@@ -90,14 +88,13 @@ public class MainActivity extends AppCompatActivity {
         AsyncHttpClient client2 = new AsyncHttpClient();
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
         client2.get(url, null, new JsonHttpResponseHandler() {
-            //onSuccess(Worked)
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-                JSONArray photoJSON = null;
+
                 try {
                     adapter.clear();
+                    JSONArray photoJSON = null;
                     photoJSON = response.getJSONArray("data");//array posts
                     //iterate array of posts
                     for (int i = 0; i < photoJSON.length(); i++) {
@@ -107,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                         InstagramPhotos photo = new InstagramPhotos();
                         photo.profile = photoJSon.getJSONObject("user").getString("profile_picture");
                         photo.username = photoJSon.getJSONObject("user").getString("username");
-                        // -Caption: {"data" => [X] => "caption" => "text"}
                         photo.caption = photoJSon.getJSONObject("caption").getString("text");
                         photo.Created_Time = photoJSon.getJSONObject("caption").getLong("created_time");
                         photo.id = photoJSon.getString("id");
@@ -154,11 +150,8 @@ public class MainActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
         client.get(url, null, new JsonHttpResponseHandler() {
-            //onSuccess(Worked)
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
                 JSONArray photoJSON = null;
                 try {
                     photoJSON = response.getJSONArray("data");//array posts
@@ -168,22 +161,20 @@ public class MainActivity extends AppCompatActivity {
 
                         //decode attribute of the json into a data model
                         InstagramPhotos photo = new InstagramPhotos();
-                        photo.profile = photoJSon.getJSONObject("user").getString("profile_picture");
-                        photo.username = photoJSon.getJSONObject("user").getString("username");
-                        // -Caption: {"data" => [X] => "caption" => "text"}
-                        photo.caption = photoJSon.getJSONObject("caption").getString("text");
-                        photo.Created_Time = photoJSon.getJSONObject("caption").getLong("created_time");
-                        photo.id = photoJSon.getString("id");
-                        photo.imageUrl = photoJSon.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
-                        //Height
-                        photo.imageHeight = photoJSon.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
-                        //Like Counts
-                        photo.likesCount = photoJSon.getJSONObject("likes").getInt("count");
                         JSONArray jsArray = photoJSon.getJSONObject("comments").getJSONArray("data");
                         photo.comment = jsArray.getJSONObject(jsArray.length() - 1).getString("text");
                         photo.comment2 = jsArray.getJSONObject(jsArray.length() - 2).getString("text");
                         photo.usercomment = jsArray.getJSONObject(jsArray.length() - 1).getJSONObject("from").getString("username");
                         photo.usercomment2 = jsArray.getJSONObject(jsArray.length() - 2).getJSONObject("from").getString("username");
+                        photo.profile = photoJSon.getJSONObject("user").getString("profile_picture");
+                        photo.username = photoJSon.getJSONObject("user").getString("username");
+                        photo.caption = photoJSon.getJSONObject("caption").getString("text");
+                        photo.Created_Time = photoJSon.getJSONObject("caption").getLong("created_time");
+                        photo.id = photoJSon.getString("id");
+                        photo.imageUrl = photoJSon.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+                        photo.imageHeight = photoJSon.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+                        photo.likesCount = photoJSon.getJSONObject("likes").getInt("count");
+
                         photos.add(photo);
 
 
@@ -195,14 +186,8 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
             }
-
-            // Iterate each of the photo items and decode the items into java
-
-            //onFailure
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("SERVER ERROR", responseString);
-                swipeContainer.setRefreshing(false);
             }
 
             //Do Something

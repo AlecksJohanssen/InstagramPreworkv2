@@ -22,6 +22,8 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import org.json.JSONException;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -50,24 +52,37 @@ public class SwipeListAdapter extends ArrayAdapter<InstagramPhotos> {
         //Look up view for populating the data
         TextView cTime = (TextView) convertView.findViewById(R.id.Created_Time);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
-        TextView tvUsername1= (TextView) convertView.findViewById(R.id.tvUsername1);
+        TextView tvUsername1 = (TextView) convertView.findViewById(R.id.tvUsername1);
         TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaption);
         ImageView ivPhotos = (ImageView) convertView.findViewById(R.id.ivPhotos);
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
         TextView tvcmt1 = (TextView) convertView.findViewById(R.id.cmtlow);
         TextView tvcmt2 = (TextView) convertView.findViewById(R.id.cmtlow1);
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhotos);
-        Transformation transformation = new RoundedTransformationBuilder()
-                .borderColor(Color.BLACK)
-                .borderWidthDp(0)
-                .cornerRadiusDp(30)
-                .oval(false)
-                .build();
-        Picasso.with(getContext()).load(photo.profile).fit().transform(transformation).into(ivProfile);
-        ivProfile.setImageResource(0);
+        try {
+            Picasso.with(getContext()).load(photo.imageUrl).into(ivPhotos);
+            Transformation transformation = new RoundedTransformationBuilder()
+                    .borderColor(Color.BLACK)
+                    .borderWidthDp(0)
+                    .cornerRadiusDp(30)
+                    .oval(false)
+                    .build();
+            Picasso.with(getContext()).load(photo.profile).fit().transform(transformation).into(ivProfile);
+            ivPhotos = (ImageView) convertView.findViewById(R.id.ivPhotos);
+
+        } catch (Exception e)
+        {
+            Picasso.with(getContext()).load(photo.imageUrl).into(ivPhotos);
+            Transformation transformation = new RoundedTransformationBuilder()
+                    .borderColor(Color.BLACK)
+                    .borderWidthDp(0)
+                    .cornerRadiusDp(30)
+                    .oval(false)
+                    .build();
+            Picasso.with(getContext()).load(photo.profile).fit().transform(transformation).into(ivProfile);
+            ivPhotos = (ImageView) convertView.findViewById(R.id.ivPhotos);
+        }
        cTime.setText("\uD83D\uDD52" + DateUtils.getRelativeTimeSpanString(photo.Created_Time * 1000));
-        ivPhotos.setImageResource(0);
         tvUsername.setText(photo.username);
         tvUsername1.setText(photo.username);
         DecimalFormat formatter = new DecimalFormat("#,###,###");
